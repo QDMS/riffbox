@@ -1,10 +1,12 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useColorScheme } from '@/src/components/useColorScheme.web';
 import { useClientOnlyValue } from '@/src/components/useClientOnlyValue';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { BottomTabBar } from '@react-navigation/bottom-tabs'
+import Player from '@/src/components/Player';
 
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -22,10 +24,19 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-      }}>
+        tabBarStyle: {
+          elevation: 0,
+          borderTopWidth:0,
+          backgroundColor: '#000',
+        },
+      }}
+      tabBar={(props) => (
+      <View style={{ backgroundColor: 'rgba(225,225,225, 0)' }}>
+        <Player />
+        <BottomTabBar {...props}/>
+      </View>)}
+    >
       <Tabs.Screen
         name="index"
         options={{
