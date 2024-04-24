@@ -1,31 +1,52 @@
-import EditScreenInfo from '@/src/components/EditScreenInfo';
-import { View, Text } from '@/src/components/Themed';
-import { StyleSheet } from 'react-native';
+import { View, Text } from '@/src/components/Themed'
+import TrackListItem from '@/src/components/TrackListItem'
+import { FlatList, StyleSheet, TextInput } from 'react-native'
+import { tracks } from './../../../assets/data/tracks';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useColorScheme } from '@/src/components/useColorScheme';
+import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
+import { useState } from 'react';
 
 
 export default function SearchScreen() {
+
+  const [search, setSearch] = useState('');
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Search</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
-    </View>
-  );
+    <SafeAreaView>
+      <View style={styles.header}>
+        {/* Header */}
+        <FontAwesome name="search" size={16} color="#e31b23" />
+        <TextInput style={styles.input}
+          value={search}
+          onChangeText={setSearch}
+          placeholderTextColor="#e31b23"
+          placeholder='What Do You Want To Listen To?' />
+        <Text onPress={() => setSearch('')} style={{ color: "silver" }}>Cancel</Text>
+      </View>
+      <FlatList
+        data={tracks}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => <TrackListItem track={item} />}
+      />
+    </SafeAreaView>
+
+
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10
+  },
+  input: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#121314",
+    padding: 8,
+    marginHorizontal: 10,
+    borderRadius: 5,
+    color: "white"
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+})

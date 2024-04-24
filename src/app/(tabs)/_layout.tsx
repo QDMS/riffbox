@@ -1,7 +1,7 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, Text } from 'react-native';
 import { useColorScheme } from '@/src/components/useColorScheme.web';
 import { useClientOnlyValue } from '@/src/components/useClientOnlyValue';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -31,7 +31,8 @@ export default function TabLayout() {
         options={{
           headerTitleAlign: "center",
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarLabel: ({ color, focused }) => (<Text style={{ color: focused ? "#e31b23" : color, fontSize: 13 }}>Home</Text>),
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="home" color={focused ? "#e31b23" : color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -53,14 +54,17 @@ export default function TabLayout() {
         options={{
           title: 'Search',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          tabBarLabel: ({ color, focused }) => (<Text style={{ color: focused ? "#e31b23" : color, fontSize: 13 }}>Search</Text>),
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="search" color={focused ? "#e31b23" : color} />,
         }}
       />
       <Tabs.Screen
         name="favorites"
         options={{
           title: 'Favorites',
-          tabBarIcon: ({ color }) => <TabBarIcon name="heart" color={color} />,
+          headerTitleAlign: "center",
+          tabBarLabel: ({ color, focused }) => (<Text style={{ color: focused ? "#e31b23" : color, fontSize: 13 }}>Favorites</Text>),
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="heart" color={focused ? "#e31b23" : color} />,
         }}
       />
     </Tabs>

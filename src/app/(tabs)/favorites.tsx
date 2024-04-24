@@ -1,31 +1,20 @@
-import EditScreenInfo from '@/src/components/EditScreenInfo';
-import { View, Text } from '@/src/components/Themed';
-import { StyleSheet } from 'react-native';
-
+import { View, Text } from '@/src/components/Themed'
+import TrackListItem from '@/src/components/TrackListItem'
+import { FlatList, StyleSheet } from 'react-native'
+import { tracks } from './../../../assets/data/tracks';
 
 export default function FavoritesScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Favorites</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
-    </View>
-  );
+
+    <FlatList
+      data={tracks}
+      showsVerticalScrollIndicator={false}
+      renderItem={({ item }) => <TrackListItem track={item} />}
+    />
+
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+
+})
