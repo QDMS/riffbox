@@ -3,30 +3,30 @@ import { Track } from '../../src/types';
 export const tracks: Track[] = [
   {
     id: '6eT7xZZlB2mwyzJ2sUKG6w',
-    name: 'She Know',
-    preview_url: 'https://soundcloud.com/millertime239/k-1_she-know-mp3',
+    name: 'White Iverson',
+    preview_url: 'https://www.kozco.com/tech/piano2.wav',
     artists: [
       {
         id: '246dkjvS1zLTtiykXe5h60',
-        name: 'K-1',
+        name: 'Post Malone',
       },
     ],
     album: {
       id: '5s0rmjP8XOPhP6HhqOhuyC',
-      name: 'Untitled',
+      name: 'Stoney (Deluxe)',
       images: [
         {
-          url: 'https://scontent-atl3-2.xx.fbcdn.net/v/t1.6435-9/83088179_196770841507517_6158447386898202624_n.jpg?stp=dst-jpg_p206x206&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_ohc=YC9Z_6y2eUsAb6hUlsG&_nc_ht=scontent-atl3-2.xx&oh=00_AfCbSFRD1IBHgmDkS7lM_ub0zE6QsIIOnaGFoSP41-YqgA&oe=66509D80',
+          url: 'https://i.scdn.co/image/ab67616d0000b27355404f712deb84d0650a4b41',
           height: 640,
           width: 640,
         },
         {
-          url: 'https://scontent-atl3-1.xx.fbcdn.net/v/t1.6435-9/83065274_197182991466302_6735267829827764224_n.jpg?stp=c0.23.206.206a_dst-jpg_p206x206&_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_ohc=HOGrgteL4S4Ab69k5Kg&_nc_ht=scontent-atl3-1.xx&oh=00_AfDMl7cN0ZXmjD4nDrzKG8rAVwfkAXR6E34_AjcwJ9fngg&oe=6650C346',
+          url: 'https://i.scdn.co/image/ab67616d00001e0255404f712deb84d0650a4b41',
           height: 300,
           width: 300,
         },
         {
-          url: 'https://scontent-atl3-2.xx.fbcdn.net/v/t1.6435-9/197473955_4211892872202565_4804915968487698975_n.jpg?stp=dst-jpg_p206x206&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=PHipuaRlkTgAb6jYk1B&_nc_ht=scontent-atl3-2.xx&oh=00_AfAED6yk9OuWB33a1MbXcT8eT2Sw5tLVB0zQxKXAhTOd4Q&oe=6650A3C2',
+          url: 'https://i.scdn.co/image/ab67616d0000485155404f712deb84d0650a4b41',
           height: 64,
           width: 64,
         },

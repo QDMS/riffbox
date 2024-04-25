@@ -1,27 +1,59 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Animated, Easing } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { usePlayerContext } from '../providers/PlayerProvider';
-
+import { Audio } from 'expo-av';
+import { Sound } from 'expo-av/build/Audio';
 
 const Player = () => {
-    const {track} = usePlayerContext();
-    const animation = useRef(new Animated.Value(0)).current;
+    const [sound, setSound] = useState<Sound>();
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [playbackPosition, setPlaybackPosition] = useState(0);
+    const { track } = usePlayerContext();
 
     useEffect(() => {
-        // Simulating music intensity change (replace with your actual logic)
-        const musicIntensity = setInterval(() => {
-            const randomValue = Math.random() * 100;
-            Animated.timing(animation, {
-                toValue: randomValue,
-                duration: 500,
-                easing: Easing.linear,
-                useNativeDriver: true,
-            }).start();
-        }, 1000);
+        playTrack();
+    }, [track]);
 
-        return () => clearInterval(musicIntensity);
-    }, []);
+    useEffect(() => {
+        return sound ? () => {
+            console.log("Unloading Sound");
+            sound.unloadAsync();
+        } : undefined;
+    }, [sound]);
+
+    const playTrack = async () => {
+        if (sound) {
+            await sound.unloadAsync();
+        }
+        if (!track?.preview_url) {
+            return;
+        }
+        const { sound: newSound } = await Audio.Sound.createAsync({
+            uri: track.preview_url,
+        });
+        setSound(newSound);
+        setIsPlaying(true);
+        await newSound.playAsync();
+    };
+
+    const pauseTrack = async () => {
+        if (sound && isPlaying) {
+            const status = await sound.getStatusAsync();
+            if (status.isLoaded) {
+                setPlaybackPosition(status.positionMillis);
+                await sound.pauseAsync();
+                setIsPlaying(false);
+            }
+        }
+    };
+
+    const resumeTrack = async () => {
+        if (sound && !isPlaying) {
+            await sound.playFromPositionAsync(playbackPosition);
+            setIsPlaying(true);
+        }
+    };
 
     if (!track) {
         return null;
@@ -33,39 +65,32 @@ const Player = () => {
         <View style={styles.container}>
             <View style={styles.player}>
                 {image && <Image source={{ uri: image.url }} style={styles.image} />}
-
-                <View style={{ flex: 1 }}>
+                <View>
                     <Text style={styles.title}>{track.name}</Text>
                     <Text style={styles.subtitle}>{track.artists[0]?.name}</Text>
                 </View>
-
-                <Ionicons
-                    name={'heart-outline'}
-                    size={20}
-                    color={'white'}
-                    style={{ marginHorizontal: 10 }}
-                />
-                <Ionicons
-                    disabled={!track?.preview_url}
-                    name={'play'}
-                    size={22}
-                    color={track?.preview_url ? 'white' : 'gray'}
-                />
+                <View style={styles.controls}>
+                    {isPlaying ? (
+                        <TouchableOpacity onPress={pauseTrack}>
+                            <Ionicons name={'pause'} size={22} color={'white'} />
+                        </TouchableOpacity>
+                    ) : (
+                        <Ionicons
+                            disabled={!track?.preview_url}
+                            name={'play'}
+                            size={22}
+                            color={track?.preview_url ? 'white' : 'gray'}
+                            onPress={resumeTrack}
+                        />
+                    )}
+                    <Ionicons
+                        name={'heart-outline'}
+                        size={20}
+                        color={'white'}
+                        style={{ marginLeft: 10 }}
+                    />
+                </View>
             </View>
-
-            <Animated.View
-                style={[
-                    styles.visualizer,
-                    {
-                        transform: [
-                            { scaleY: animation.interpolate({
-                                inputRange: [0, 100],
-                                outputRange: [0.1, 1],
-                            }) },
-                        ],
-                    },
-                ]}
-            />
         </View>
     );
 };
@@ -75,16 +100,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -100,
         width: '100%',
-        // height: 75,
         padding: 10,
     },
     player: {
         backgroundColor: '#5e0000',
+        borderRadius: 5,
+        padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 5,
-        padding: 3,
-        paddingRight: 15,
+        justifyContent: 'space-between',
     },
     title: {
         color: 'white',
@@ -99,11 +123,9 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 5,
     },
-    visualizer: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        marginTop: 10,
-        width: 5,
-        borderRadius: 5,
+    controls: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
 
